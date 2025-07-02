@@ -19,6 +19,7 @@ async def get_user(user_id: int):
 
 @app.get("/filter/users", response_model=list[UserOut])
 async def get_users(params:UserFilterDTO = Depends()):
+    print(params)
     users = await crud.get_all_users(params)
     if users is None:
         raise HTTPException(status_code=404, detail="No Users Exist")
