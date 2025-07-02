@@ -50,3 +50,4 @@ async def delete_user(user_id: int):
         await user.delete()
         return True
     return False
+
