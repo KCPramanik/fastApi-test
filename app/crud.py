@@ -1,5 +1,4 @@
 from app.models import User
-from app.schemas import UserFilterDTO
 
 async def create_user(data):
      return await User.create(**data.dict())
@@ -43,4 +42,11 @@ async def update_user(user_id: int, data):
             setattr(user, key, value)
         await user.save()
     return user
+
+async def delete_user(user_id: int):
+    user = await User.get_or_none(id=user_id)
+    if user:
+        await user.delete()
+        return True
+    return False
 
