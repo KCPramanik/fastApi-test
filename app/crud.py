@@ -1,5 +1,4 @@
 from app.models import User
-from app.schemas import UserFilterDTO
 
 async def create_user(data):
      return await User.create(**data.dict())

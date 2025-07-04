@@ -2,7 +2,6 @@ from fastapi import FastAPI, HTTPException, Depends
 from tortoise.contrib.fastapi import register_tortoise
 from app import config, crud
 from app.schemas import UserCreate , UserUpdate , UserOut, UserFilterDTO
-from typing import Optional
 
 app = FastAPI()
 
