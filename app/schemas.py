@@ -1,6 +1,16 @@
 from pydantic import BaseModel
 from typing import Optional
 
+class RoleCreate(BaseModel):
+    name: str
+
+class RoleOut(BaseModel):
+    id: int
+    name: str
+
+    class Config:
+        orm_mode = True
+
 class UserCreate(BaseModel):
     name: str
     email: str
@@ -38,6 +48,13 @@ class UserOut(BaseModel):
     vill: str
     state: str
     pin:int
+    role: Optional[RoleOut] = None
 
     class Config:
         orm_mode = True
+
+
+
+class UserRoleMap(BaseModel):
+    user_id: int
+    role_id: int
