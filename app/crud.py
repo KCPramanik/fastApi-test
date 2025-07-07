@@ -1,10 +1,16 @@
-from app.models import User
+from app.models import User, Role
+from fastapi import HTTPException
 
 async def create_user(data):
-     return await User.create(**data.dict())
+    user = await User.create(**data.dict())
+    await user.fetch_related("role")  # ensure role is included, even if None
+    return user
 
 async def get_user(user_id: int):
-    return await User.get_or_none(id=user_id)
+    user = await User.get_or_none(id=user_id)
+    if user:
+        await user.fetch_related("role")
+    return user
 
 async def get_all_users(params):
    
@@ -50,3 +56,22 @@ async def delete_user(user_id: int):
         return True
     return False
 
+async def create_role(role):
+    return await Role.create(**role.dict())
+
+async def get_all_role():
+    return await Role.all()
+
+async def user_role_map(data):
+    user = await User.get_or_none(id=data.user_id)
+    role = await Role.get_or_none(id=data.role_id)
+
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    if not role:
+        raise HTTPException(status_code=404, detail="Role not found")
+    
+    user.role = role
+    await user.save()
+    await user.fetch_related("role")
+    return user
